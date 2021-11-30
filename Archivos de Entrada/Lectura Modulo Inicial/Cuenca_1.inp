@@ -1,0 +1,218 @@
+[TITLE]
+;;Project Title/Notes
+
+[OPTIONS]
+;;Option             Value
+FLOW_UNITS           CMS
+INFILTRATION         HORTON
+FLOW_ROUTING         DYNWAVE
+LINK_OFFSETS         DEPTH
+MIN_SLOPE            0
+ALLOW_PONDING        NO
+SKIP_STEADY_STATE    NO
+
+START_DATE           06/25/2019
+START_TIME           00:00:00
+REPORT_START_DATE    06/25/2019
+REPORT_START_TIME    00:00:00
+END_DATE             06/25/2019
+END_TIME             06:00:00
+SWEEP_START          01/01
+SWEEP_END            12/31
+DRY_DAYS             0
+REPORT_STEP          00:15:00
+WET_STEP             00:05:00
+DRY_STEP             01:00:00
+ROUTING_STEP         0:00:30 
+RULE_STEP            00:00:00
+
+INERTIAL_DAMPING     PARTIAL
+NORMAL_FLOW_LIMITED  BOTH
+FORCE_MAIN_EQUATION  H-W
+VARIABLE_STEP        0.75
+LENGTHENING_STEP     0
+MIN_SURFAREA         1.167
+MAX_TRIALS           8
+HEAD_TOLERANCE       0.0015
+SYS_FLOW_TOL         5
+LAT_FLOW_TOL         5
+MINIMUM_STEP         0.5
+THREADS              1
+
+[EVAPORATION]
+;;Data Source    Parameters
+;;-------------- ----------------
+MONTHLY          1      1      1      1      1      1      1      1      1      1      1      1     
+DRY_ONLY         NO
+
+[RAINGAGES]
+;;Name           Format    Interval SCF      Source    
+;;-------------- --------- ------ ------ ----------
+RG1              VOLUME    0:10     1.0      FILE       "Santander_SWMM.txt" Santander  MM   
+
+[SUBCATCHMENTS]
+;;Name           Rain Gage        Outlet           Area     %Imperv  Width    %Slope   CurbLen  SnowPack        
+;;-------------- ---------------- ---------------- -------- -------- -------- -------- -------- ----------------
+;Definicion de Cuenca Piloto Inicial
+A1               *                J1               1        50       100      5        0                        
+
+[SUBAREAS]
+;;Subcatchment   N-Imperv   N-Perv     S-Imperv   S-Perv     PctZero    RouteTo    PctRouted 
+;;-------------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+A1               0.01       0.1        0.05       0.05       25         OUTLET    
+
+[INFILTRATION]
+;;Subcatchment   Param1     Param2     Param3     Param4     Param5    
+;;-------------- ---------- ---------- ---------- ---------- ----------
+A1               3.0        0.5        4          7          0         
+
+[LID_CONTROLS]
+;;Name           Type/Layer Parameters
+;;-------------- ---------- ----------
+TestRG           RG
+TestRG           SURFACE    100        0.0        0.107      0.767      5         
+TestRG           SOIL       100        0.403      0.168      0.112      168        21.09      37.31     
+TestRG           STORAGE    0          0.75       101.1      0         
+TestRG           REMOVALS   TSS        0         
+
+TestBC           BC
+TestBC           SURFACE    100        0.0        0.163      1.025      5         
+TestBC           SOIL       100        0.501      0.219      0.089      92.32      8.75       77.7      
+TestBC           STORAGE    100        0.58       40         0         
+TestBC           DRAIN      1.366      1.3        100        6          0          0                    
+TestBC           REMOVALS   TSS        0          FT         0          NT         0         
+
+TestGR           GR
+TestGR           SURFACE    100        0.0        0.093      1.1        5         
+TestGR           SOIL       100        0.467      0.235      0.066      266        10.0       65        
+TestGR           DRAINMAT   100        0.465      0.065     
+
+TestIT           IT
+TestIT           SURFACE    100        0.0        0.24       1.0        5         
+TestIT           STORAGE    100        0.75       24         0         
+TestIT           DRAIN      0.69       0.5        6          6          0          0                    
+TestIT           REMOVALS   TSS        0          FT         0          NT         0         
+
+TestPP           PP
+TestPP           SURFACE    100        0.0        0.027      1.58       5         
+TestPP           PAVEMENT   100        0.366      0.075      745        0          0          0         
+TestPP           SOIL       100        0.425      0.1        0.024      115        10.0       65        
+TestPP           STORAGE    100        0.543      172        0         
+TestPP           DRAIN      0.613      0.867      100        6          0          0                    
+TestPP           REMOVALS   TSS        0          FT         0          NT         0         
+
+TestRB           RB
+TestRB           STORAGE    100        0.75       0.5        0         
+TestRB           DRAIN      147        0.5        100        5.9        0          0                    
+TestRB           REMOVALS   TSS        0          FT         0          NT         0         
+
+TestRD           RD
+TestRD           SURFACE    100        0.0        0.1        1.0        5         
+TestRD           DRAIN      100        0.5        6          6          0          0                    
+
+TestVS           VS
+TestVS           SURFACE    100        0.0        0.2        1.05       5         
+
+[LID_USAGE]
+;;Subcatchment   LID Process      Number  Area       Width      InitSat    FromImp    ToPerv     RptFile                  DrainTo          FromPerv  
+;;-------------- ---------------- ------- ---------- ---------- ---------- ---------- ---------- ------------------------ ---------------- ----------
+A1               TestBC           1       0          0          0          100        0          *                        *                0               
+
+[JUNCTIONS]
+;;Name           Elevation  MaxDepth   InitDepth  SurDepth   Aponded   
+;;-------------- ---------- ---------- ---------- ---------- ----------
+J1               0          0          0          0          0         
+J5               0          0          0          0          0         
+
+[OUTFALLS]
+;;Name           Elevation  Type       Stage Data       Gated    Route To        
+;;-------------- ---------- ---------- ---------------- -------- ----------------
+O1               0          FREE                        NO                       
+
+[CONDUITS]
+;;Name           From Node        To Node          Length     Roughness  InOffset   OutOffset  InitFlow   MaxFlow   
+;;-------------- ---------------- ---------------- ---------- ---------- ---------- ---------- ---------- ----------
+C1               J1               J5               400        0.01       0          0          0          0         
+
+[XSECTIONS]
+;;Link           Shape        Geom1            Geom2      Geom3      Geom4      Barrels    Culvert   
+;;-------------- ------------ ---------------- ---------- ---------- ---------- ---------- ----------
+C1               CIRCULAR     1                0          0          0          1                    
+
+[POLLUTANTS]
+;;Name           Units  Crain      Cgw        Crdii      Kdecay     SnowOnly   Co-Pollutant     Co-Frac    Cdwf       Cinit     
+;;-------------- ------ ---------- ---------- ---------- ---------- ---------- ---------------- ---------- ---------- ----------
+TSS              MG/L   0.0        0.0        0.0        0.0        NO         *                0.0        0          0.0       
+FT               MG/L   0.0        0.0        0.0        0.0        NO         *                0.0        0.0        0.0       
+NT               MG/L   0.0        0.0        0.0        0.0        NO         *                0.0        0.0        0.0       
+
+[LANDUSES]
+;;               Sweeping   Fraction   Last      
+;;Name           Interval   Available  Swept     
+;;-------------- ---------- ---------- ----------
+General          0          0          0         
+
+[COVERAGES]
+;;Subcatchment   Land Use         Percent   
+;;-------------- ---------------- ----------
+A1               General          100       
+
+[LOADINGS]
+;;Subcatchment   Pollutant        Buildup   
+;;-------------- ---------------- ----------
+
+[BUILDUP]
+;;Land Use       Pollutant        Function   Coeff1     Coeff2     Coeff3     Per Unit  
+;;-------------- ---------------- ---------- ---------- ---------- ---------- ----------
+General          TSS              EXP        0.0        0.0        0.0        AREA      
+General          FT                                                                     
+General          NT                                                                     
+
+[WASHOFF]
+;;Land Use       Pollutant        Function   Coeff1     Coeff2     SweepRmvl  BmpRmvl   
+;;-------------- ---------------- ---------- ---------- ---------- ---------- ----------
+General          TSS              EXP        0.0        0.0        0.0        0.0       
+General          FT                                                                     
+General          NT                                                                     
+
+[DWF]
+;;Node           Constituent      Baseline   Patterns  
+;;-------------- ---------------- ---------- ----------
+J1               FLOW             0.000434  
+
+[REPORT]
+;;Reporting Options
+SUBCATCHMENTS ALL
+NODES ALL
+LINKS ALL
+
+[TAGS]
+
+[MAP]
+DIMENSIONS 0.000 0.000 10000.000 10000.000
+Units      None
+
+[COORDINATES]
+;;Node           X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+J1               -1741.705          5850.225          
+J5               -1738.739          8234.234          
+O1               3486.486           5909.910          
+
+[VERTICES]
+;;Link           X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+
+[Polygons]
+;;Subcatchment   X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+A1               -1744.574          5843.072          
+A1               1126.878           5843.072          
+A1               1126.878           8230.384          
+A1               -1744.574          8230.384          
+
+[SYMBOLS]
+;;Gage           X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+RG1              -3468.468          8144.144          
+
